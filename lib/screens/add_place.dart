@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:favourite_places_app/providers/user_places.dart';
+import 'package:favourite_places_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,9 +13,10 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
+  File?  _pickedImage;
   void _savePlace() {
     final enteredTitle = _titleController.text;
-    if (enteredTitle.isEmpty) {
+    if (enteredTitle.isEmpty || _pickedImage == null) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -26,7 +29,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
             ),
           ),
           content: Text(
-            'Please enter a valid title for the place.',
+            ' Please provide a valid title and pick an image.',
             style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
               color: Theme.of(ctx).colorScheme.onSurface.withAlpha(200),
             ),
@@ -46,7 +49,8 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
       );
       return;
     }
-    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+    ref.read(userPlacesProvider.notifier).
+    addPlace(enteredTitle, _pickedImage!);
     Navigator.of(context).pop();
   }
 
@@ -76,6 +80,13 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface
               ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            ImageInput(onPickImage:(image){
+              _pickedImage = image;
+            },
             ),
             const SizedBox(
               height: 16,

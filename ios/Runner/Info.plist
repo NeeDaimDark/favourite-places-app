@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to the photo library to select and display your favourite places' photos.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires access to the camera to take photos of your favourite places.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires access to the microphone to record audio notes for your favourite places.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app requires access to your location to show and save your favourite places.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
