@@ -36,7 +36,14 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Text('No Image Taken',textAlign: TextAlign.center,);
+    Widget content = const Text('No Image Taken',textAlign: TextAlign.center,
+
+    style: TextStyle(
+        fontSize: 16,
+
+        color: Colors.grey,
+      )
+    );
     if(_imageFile != null){
       content = GestureDetector(
         onTap: _takePicture,
@@ -49,6 +56,7 @@ class _ImageInputState extends State<ImageInput> {
       );
     }
     return Container(
+
       height: 250,
       width: double.infinity,
       alignment: Alignment.center,

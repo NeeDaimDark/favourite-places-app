@@ -1,16 +1,19 @@
+import 'package:favourite_places_app/screens/map.dart';
 import 'package:flutter/material.dart';
 import 'package:favourite_places_app/models/place.dart';
-final String apiKey = 'AIzaSyDUpDzYLi2u39KEBpsAylPIr4CuVhXMJ2k';
+
+// Read Maps API key from --dart-define=GOOGLE_MAPS_API_KEY=... at build time
+const String apiKey = 'AIzaSyDUpDzYLi2u39KEBpsAylPIr4CuVhXMJ2k';
 
 class PlaceDetailScreen extends StatelessWidget {
   final Place place;
-  String get locationImage {
 
+  String? get locationImage {
+    if (apiKey.isEmpty) return null; // no key provided, skip image
     final lat = place.location.latitude;
     final lng = place.location.longitude;
     return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=$apiKey';
   }
-
 
   const PlaceDetailScreen({super.key, required this.place}) ;
 
@@ -19,13 +22,13 @@ class PlaceDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            place.title,
+          place.title,
           style: Theme.of(context).textTheme.titleLarge?.
           copyWith(
               color: Theme.of(context).colorScheme.onSurface
           ),
         ),
-         ),
+      ),
       body: Stack(
         children: [
           Image.file(
@@ -40,10 +43,26 @@ class PlaceDetailScreen extends StatelessWidget {
             right: 0,
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 70,
-                  backgroundImage: NetworkImage(locationImage),
-
+                GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => MapScreen(
+                        location: place.location,
+                        isSelecting: false,
+                      )
+                      ),
+                    );//open map screen
+                  },
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundImage: locationImage != null ? NetworkImage(locationImage!) : null,
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: locationImage == null
+                        ? Icon(Icons.map,
+                        size: 48,
+                        color: Theme.of(context).colorScheme.primary)
+                        : null,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Container(
