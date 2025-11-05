@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:favourite_places_app/models/place.dart';
 import 'package:favourite_places_app/providers/user_places.dart';
 import 'package:favourite_places_app/widgets/image_input.dart';
 import 'package:favourite_places_app/widgets/location_input.dart';
@@ -15,9 +16,10 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
   File?  _pickedImage;
+  PlaceLocation? _pickedLocation;
   void _savePlace() {
     final enteredTitle = _titleController.text;
-    if (enteredTitle.isEmpty || _pickedImage == null) {
+    if (enteredTitle.isEmpty || _pickedImage == null|| _pickedLocation == null) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -30,7 +32,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
             ),
           ),
           content: Text(
-            ' Please provide a valid title and pick an image.',
+            ' Please provide a valid title, image, and location.',
             style: Theme.of(ctx).textTheme.bodyMedium?.copyWith(
               color: Theme.of(ctx).colorScheme.onSurface.withAlpha(200),
             ),
@@ -51,7 +53,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
       return;
     }
     ref.read(userPlacesProvider.notifier).
-    addPlace(enteredTitle, _pickedImage!);
+    addPlace(enteredTitle, _pickedImage!, _pickedLocation!);
     Navigator.of(context).pop();
   }
 
@@ -92,7 +94,11 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
             const SizedBox(
               height: 16,
             ),
-            LocationInput(),
+            LocationInput(
+              onSelectLocation: (location){
+                _pickedLocation = location;
+              },
+            ),
             const SizedBox(
               height: 16,
             ),
