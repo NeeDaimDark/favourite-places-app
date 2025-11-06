@@ -21,8 +21,11 @@ class _ImageInputState extends State<ImageInput> {
     final imagePicker =  ImagePicker();
     final pickedImage =await imagePicker.pickImage(
       source: ImageSource.camera,
-      imageQuality: 80,
-      maxWidth: 600,
+      // Prefer rear camera for better optics
+      preferredCameraDevice: CameraDevice.rear,
+      // Keep original resolution and avoid JPEG recompression to preserve quality
+      // (omit imageQuality/maxWidth/maxHeight)
+      requestFullMetadata: true,
     );
     if(pickedImage == null){
       return;
@@ -52,6 +55,7 @@ class _ImageInputState extends State<ImageInput> {
           fit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,
+          filterQuality: FilterQuality.high,
         ),
       );
     }
@@ -63,7 +67,7 @@ class _ImageInputState extends State<ImageInput> {
       decoration: BoxDecoration(
         border: Border.all(
             width: 1,
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withAlpha(77),
         ),
       ),
 
@@ -76,7 +80,7 @@ class _ImageInputState extends State<ImageInput> {
             right: 10,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+                backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(179),
               ),
               onPressed: _takePicture,
               icon: const Icon(Icons.camera),
