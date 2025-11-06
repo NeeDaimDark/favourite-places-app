@@ -227,3 +227,10 @@ Built with ❤️ using Flutter
 ---
 
 **Note**: Remember to keep your API keys secure and never commit them to public repositories!
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/1.jpg" alt="App screenshot 1" width="300"/>
+  <img src="docs/screenshots/2.jpg" alt="App screenshot 2" width="300"/>
+</p>
